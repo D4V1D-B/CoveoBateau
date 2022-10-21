@@ -1,4 +1,5 @@
 from game_message import Tick, Action, Spawn, Sail, Dock, Anchor, directions
+from python.test.game_message import Position
 
 class Bot:
     def __init__(self):
@@ -12,3 +13,11 @@ class Bot:
             return Spawn(tick.map.ports[0])
         
         return Sail(directions[tick.currentTick % len(directions)])
+
+    def getPosition(self):
+        return (Position.row, Position.column)
+    
+    def pathFinding(self, goal, h ):
+        
+        return None
+
