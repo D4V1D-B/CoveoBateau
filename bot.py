@@ -2,6 +2,7 @@ from json.encoder import INFINITY
 from turtle import position
 from game_message import Map, Tick, Action, Spawn, Sail, Dock, Anchor, directions
 from python.test.game_message import Position
+from queue import PriorityQueue
 
 class Bot:
     def __init__(self):
@@ -29,15 +30,13 @@ def getMapTopo():
 def getListeNodeAutour():
     liste = []
     pos = getBoatposition()
-    liste.append((pos[0]-1, pos[0]-1))
-    liste.append((pos[0]-1, pos[0]))
-    liste.append((pos[0]-1, pos[0]+1))
-    liste.append((pos[0], pos[0]+1))
-    liste.append((pos[0], pos[0]-1))
-    liste.append((pos[0]+1, pos[0]+1))
-    liste.append((pos[0]+1, pos[0]))
-    liste.append((pos[0]+1, pos[0]-1))
-    print(liste)
+    for x in range(-1,1):
+        for y in range(-1,1):
+            if x is 0 and y is 0:
+                continue
+            liste.append((pos[0]-x, pos[0]-y))
+
+    print('liste de neibor: ',liste)
     return liste
 
 
@@ -45,29 +44,40 @@ def getListeNodeAutour():
 def getBoatposition():
     return [Tick.currentLocation.row, Tick.currentLocation.column]
     
-def reconstruct_path(getBoatposition, current):
+def getPosNearestPort():
+    liste = Map.ports
+    valeur = []
+    for x in liste:
+        print(x)
+        valeur.append(h(getBoatposition, x))
+        print(valeur)
+
+    return sorted(valeur)
+
+def reconstruct_path(current, cameFrom):
     boat_pos = getBoatposition
     total_path = current
     for current in cameFrom:
         current = cameFrom[current]
-        total_path += current
+        total_path.append(current)
     return total_path
 
-def A_star(start, goal, h):
-    
-    openSet = Tick.currentLocation
-    
-    cameFrom = 'idk' #EmptyMAp
+def A_star(start, end, h):
+    count = 0
+    openSet = PriorityQueue()
+    openSet.put((0, count, start))
 
-    gScore = map with default value of INFINITY
-    gScore(Tick.currentLocation)
+    cameFrom = {}
 
-    fScore := map with default value of Infinity
-    fScore[start] := h(start)
+    gScore = {Map: float("inf")}
+    gScore[start] = 0
+
+    fScore = {Map: float("inf")}
+    fScore[start] = h(start.get_pos(), end.get_pos())
 
     while openSet is not empty
         current := the node in openSet having the lowest fScore[] value
-        if current ==  goal:
+        if current ==  end:
             return reconstruct_path(cameFrom, current)
 
         openSet.Remove(current)
