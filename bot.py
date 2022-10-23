@@ -45,14 +45,16 @@ def getBoatposition():
     return [Tick.currentLocation.row, Tick.currentLocation.column]
     
 def getPosNearestPort():
-    liste = Map.ports
+    liste = Tick.map.ports
     valeur = []
     for x in liste:
         print(x)
         valeur.append(h(getBoatposition, x))
-        print(valeur)
+        print("distance la plus proche",valeur)
+        print("le port le plus proche ********",sorted(valeur[0]))
 
-    return sorted(valeur)
+    
+    return sorted(valeur[0])
 
 def reconstruct_path(current, cameFrom):
     boat_pos = getBoatposition
@@ -75,19 +77,24 @@ def A_star(start, end, h):
     fScore = {Map: float("inf")}
     fScore[start] = h(start.get_pos(), end.get_pos())
 
-    while openSet is not empty
-        current := the node in openSet having the lowest fScore[] value
-        if current ==  end:
-            return reconstruct_path(cameFrom, current)
+    open_set_hash = {start}
 
-        openSet.Remove(current)
-        for each neighbor of current
-           
-            tentative_gScore = gScore[current] + d(current, neighbor)
+    while not openSet.empty():
+        current = openSet.get()[2]
+        open_set_hash.remove(current)
+
+        if current ==  end:
+            return reconstruct_path(cameFrom, current) # return path
+
+        for  neighbor in current.neighbors:
+            tentative_gScore = gScore[current] + 1
+
             if tentative_gScore < gScore[neighbor]:
-                cameFrom[neighbor] := current
-                gScore[neighbor] := tentative_gScore
-                fScore[neighbor] := tentative_gScore + h(neighbor)
-                if neighbor not in openSet
-                    openSet.add(neighbor)
-        openSet.isEmpty
+                cameFrom[neighbor] = current
+                gScore[neighbor] = tentative_gScore
+                fScore[neighbor] = tentative_gScore + h(neighbor.get_pos(), end.get_pos())
+                if neighbor not in open_set_hash:
+                    count += 1
+                    openSet.put((fScore[neighbor], count, neighbor))
+                    open_set_hash.add(neighbor)
+    return False
