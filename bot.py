@@ -6,6 +6,7 @@ from python.test.game_message import Position
 class Bot:
     def __init__(self):
         #spawn dans une postion optimiser
+        getListeNodeAutour
     
         
     def get_next_move(self, tick: Tick) -> Action:
@@ -36,6 +37,7 @@ def getListeNodeAutour():
     liste.append((pos[0]+1, pos[0]+1))
     liste.append((pos[0]+1, pos[0]))
     liste.append((pos[0]+1, pos[0]-1))
+    print(liste)
     return liste
 
 
@@ -78,4 +80,4 @@ def A_star(start, goal, h):
                 fScore[neighbor] := tentative_gScore + h(neighbor)
                 if neighbor not in openSet
                     openSet.add(neighbor)
-    openSet.isEmpty
+        openSet.isEmpty
