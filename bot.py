@@ -1,10 +1,12 @@
+from json.encoder import INFINITY
+from turtle import position
 from game_message import Map, Tick, Action, Spawn, Sail, Dock, Anchor, directions
 from python.test.game_message import Position
 
 class Bot:
     def __init__(self):
         #spawn dans une postion optimiser
-        print("Initializing your super mega duper bot")
+    
         
     def get_next_move(self, tick: Tick) -> Action:
         """
@@ -17,14 +19,45 @@ class Bot:
 
 
     #la carte est de 60 pixel par 60 pixel
-    def getPosition(self):
-        return (Position.row, Position.column)
+def h(start, end):
+    return (((end[0]-start[0])**2 + (end[1]-start[1])**2)**0.5)
+
+def getBoatposition():
+    return (Tick.currentLocation.row, Tick.currentLocation.column)
     
-    def pathFinding(self,start, goal, h):
-        return None
+def reconstruct_path(getBoatposition, current):
+    boat_pos = getBoatposition
+    total_path = current
+    for current in cameFrom:
+        current = cameFrom[current]
+        total_path += current
+    return total_path
 
-    def euclidienne(self):
-        liste = Map.ports
-        print(liste)
+def A_star(start, goal, h):
+    
+    openSet = Tick.currentLocation
+    
+    cameFrom = 'idk' #EmptyMAp
 
-        return (x, y)
+    gScore = map with default value of INFINITY
+    gScore(Tick.currentLocation)
+
+    fScore := map with default value of Infinity
+    fScore[start] := h(start)
+
+    while openSet is not empty
+        current := the node in openSet having the lowest fScore[] value
+        if current ==  goal:
+            return reconstruct_path(cameFrom, current)
+
+        openSet.Remove(current)
+        for each neighbor of current
+           
+            tentative_gScore = gScore[current] + d(current, neighbor)
+            if tentative_gScore < gScore[neighbor]:
+                cameFrom[neighbor] := current
+                gScore[neighbor] := tentative_gScore
+                fScore[neighbor] := tentative_gScore + h(neighbor)
+                if neighbor not in openSet
+                    openSet.add(neighbor)
+    openSet.isEmpty
