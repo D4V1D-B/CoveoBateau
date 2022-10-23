@@ -19,8 +19,37 @@ class Bot:
         
         return Sail(directions[tick.currentTick % len(directions)])
 
-
     #la carte est de 60 pixel par 60 pixel
+
+
+
+def getDirection(path): 
+    moves = []
+    lastvalue = reversed(path[0])
+    for x in range(len(path)-1, 0,-1):
+        variation = (lastvalue[0]-x[0], lastvalue[1]-x[1])
+    
+        if variation == (0, 1):
+            moves.append("E")
+        elif variation == (1, 0):
+            moves.append("S")
+        elif variation == (0, -1):
+            moves.append("W")
+        elif variation == (-1, 0):
+            moves.append("N")
+        elif variation == (1, 1):
+            moves.append("SE")
+        elif variation == (-1, -1):
+            moves.append("NW")
+        elif variation == (-1, 1):
+            moves.append("NE")
+        elif variation == (1, -1):
+            moves.append("SW")
+        else:
+            print("somthing is wrong I cant find a move to do")
+    moves.append(Dock())
+    return moves
+
 def h(start, end):
     return ((end[0]-start[0])**2 + (end[1]-start[1])**2)**0.5
 
@@ -57,11 +86,10 @@ def getPosNearestPort():
     return sorted(valeur[0])
 
 def reconstruct_path(current, cameFrom):
-    boat_pos = getBoatposition
-    total_path = current
-    for current in cameFrom:
+    total_path = []
+    while current in cameFrom:
         current = cameFrom[current]
-        total_path.append(current)
+        total_path.insert(0, current)
     return total_path
 
 def A_star(start, end, h):
@@ -84,7 +112,8 @@ def A_star(start, end, h):
         open_set_hash.remove(current)
 
         if current ==  end:
-            return reconstruct_path(cameFrom, current) # return path
+            return reconstruct_path(cameFrom, end)
+            print(f"this is the best fucking path {reconstruct_path(cameFrom, end)} ***********************************************")
 
         for  neighbor in current.neighbors:
             tentative_gScore = gScore[current] + 1
