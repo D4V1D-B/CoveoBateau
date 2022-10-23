@@ -20,10 +20,28 @@ class Bot:
 
     #la carte est de 60 pixel par 60 pixel
 def h(start, end):
-    return (((end[0]-start[0])**2 + (end[1]-start[1])**2)**0.5)
+    return ((end[0]-start[0])**2 + (end[1]-start[1])**2)**0.5
+
+def getMapTopo():
+    return Map.topology
+
+def getListeNodeAutour():
+    liste = []
+    pos = getBoatposition()
+    liste.append((pos[0]-1, pos[0]-1))
+    liste.append((pos[0]-1, pos[0]))
+    liste.append((pos[0]-1, pos[0]+1))
+    liste.append((pos[0], pos[0]+1))
+    liste.append((pos[0], pos[0]-1))
+    liste.append((pos[0]+1, pos[0]+1))
+    liste.append((pos[0]+1, pos[0]))
+    liste.append((pos[0]+1, pos[0]-1))
+    return liste
+
+
 
 def getBoatposition():
-    return (Tick.currentLocation.row, Tick.currentLocation.column)
+    return [Tick.currentLocation.row, Tick.currentLocation.column]
     
 def reconstruct_path(getBoatposition, current):
     boat_pos = getBoatposition
