@@ -56,6 +56,7 @@ def h(start, end):
 def getMapTopo():
     return Map.topology
 
+#manque argument de la position
 def getListeNodeAutour():
     liste = []
     pos = getBoatposition()
@@ -63,7 +64,7 @@ def getListeNodeAutour():
         for y in range(-1,1):
             if x is 0 and y is 0:
                 continue
-            liste.append((pos[0]-x, pos[0]-y))
+            liste.append((pos[0]+x, pos[0]+y))
 
     print('liste de neibor: ',liste)
     return liste
