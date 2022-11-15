@@ -64,6 +64,7 @@ def getListeNodeAutour():
         for y in range(-1,1):
             if x is 0 and y is 0:
                 continue
+            #position maximum du cadre
             liste.append((pos[0]+x, pos[0]+y))
 
     print('liste de neibor: ',liste)
@@ -104,7 +105,7 @@ def A_star(start, end, h):
     gScore[start] = 0
 
     fScore = {Map: float("inf")}
-    fScore[start] = h(start.get_pos(), end.get_pos())
+    fScore[start] = h(start, end)
 
     open_set_hash = {start}
 
@@ -116,13 +117,13 @@ def A_star(start, end, h):
             return reconstruct_path(cameFrom, end)
             print(f"this is the best fucking path {reconstruct_path(cameFrom, end)} ***********************************************")
 
-        for  neighbor in current.neighbors:
+        for  neighbor in getListeNodeAutour:
             tentative_gScore = gScore[current] + 1
 
             if tentative_gScore < gScore[neighbor]:
                 cameFrom[neighbor] = current
                 gScore[neighbor] = tentative_gScore
-                fScore[neighbor] = tentative_gScore + h(neighbor.get_pos(), end.get_pos())
+                fScore[neighbor] = tentative_gScore + h(neighbor, end)
                 if neighbor not in open_set_hash:
                     count += 1
                     openSet.put((fScore[neighbor], count, neighbor))
